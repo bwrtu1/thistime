@@ -54,7 +54,7 @@ class ihsanbey:
                 exit()
 
             elif command.startswith("cd "):
-                path = command.split(" ")[1] 
+                path = " ".join(command.split(" ")[1:])
                 command_result =  self.change_dir(path)
                 self.reliable_send(command_result)
             else:
