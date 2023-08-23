@@ -82,6 +82,7 @@ class ihsanbey:
 
 
 new_door = ihsanbey("127.0.0.1", 4040)
+# new_door = ihsanbey("4.tcp.eu.ngrok.io", 11939)
 new_door.run()
 
 
