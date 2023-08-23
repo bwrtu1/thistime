@@ -35,8 +35,8 @@ class ihsanbey:
 
     def execute_command(self, command):
         try:
-            if os.path.isdir(command):  # ileride dosyalar arasında ilerlemeye çalışırken sıkıntı çıkartabilir
-                return "beyler"  # hata mesaj
+            if os.path.isdir(command):  
+                return "beyler" 
             else:
                 return subprocess.check_output(command, shell=True)
         except subprocess.CalledProcessError as e:
