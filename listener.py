@@ -45,7 +45,7 @@ class Listener:
                     return exit()
             
 
-            if self.is_system_command(command):
+            if self.is_system_command(command) or command.strip() == "download ":
                 #self.connection.send(command.encode("utf-8"))
                 # self.reliable_send(command.encode("utf-8"))
                 self.reliable_send(command)
