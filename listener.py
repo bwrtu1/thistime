@@ -18,15 +18,20 @@ class Listener:
 
     def reliable_send(self, data):
         json_data = json.dumps(data)
-        self.connection.send(json_data)
+        byte_data = json_data.encode("utf-8")
+        self.connection.send(byte_data)
 
 
     def reliable_receive(self):
-        json_data = b" "
+        json_data = b""
         while True:
             try:
-                json_data = json_data + self.connection.recv(1024)
-                return json.loads(json_data)
+                chunk = self.connection.recv(1024)
+                if not chunk:
+                    break
+                json_data += chunk
+                decoded_data = json_data.decode("utf-8")
+                return json.loads(decoded_data)
             except ValueError:
                 continue
         
@@ -47,7 +52,7 @@ class Listener:
                 #self.connection.send(command.encode("utf-8"))
                 # self.reliable_send(command.encode("utf-8"))
                 self.reliable_send(command)
-                resultt = self.reliable_recieve()
+                resultt = self.reliable_receive()
                 print(resultt)
             else:
                 print("bu bir sistem komutu değil gönderilemedi")
@@ -55,8 +60,8 @@ class Listener:
         except socket.error as se:
             print("karşı tarafla olan bağlantı yok haci", se)
             return exit()
-        except Exception as e :
-            print("öngörülmemiş exception hatası: ", e)
+        # except Exception as e :
+        #     print("öngörülmemiş exception hatası: ", e)
 
 
     def is_system_command(self, command):
@@ -76,7 +81,8 @@ class Listener:
 
 
 my_listener = Listener("127.0.0.1", 4040)
-my_listener.run( )
+# my_listener = Listener("localhost", 4040)
+my_listener.run()
 
 # while True:
 #     command = input("-> ")
